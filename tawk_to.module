@@ -8,10 +8,10 @@
  */
 
 /**
- * Returns help text which is dispalyed in modules page
+ * Returns help text which is dispalyed in modules page.
  *
- * @param  string $path
- * @param  mixed  $arg
+ * @param string $path path
+ * @param mixed  $arg  arguments
  * @return string
  */
 function tawk_to_help($path, $arg) {
@@ -22,9 +22,9 @@ function tawk_to_help($path, $arg) {
 }
 
 /**
- * Retrieves widget details from database
+ * Retrieves widget details from database.
  *
- * @return Array
+ * @return array Widget details
  */
 function tawk_to_get_widget() {
   try {
@@ -39,10 +39,10 @@ function tawk_to_get_widget() {
 }
 
 /**
- * Hook for adding widget script to every page
+ * Hook for adding widget script to every page.
  *
- * @param  array $page
- * @return array
+ * @param  array $page Page
+ * @return array Modified page
  */
 function tawk_to_page_build(&$page) {
   $widget = tawk_to_get_widget();
@@ -64,10 +64,9 @@ function tawk_to_page_build(&$page) {
 }
 
 /**
- * Hooks up configuration menu items and paths for
- * ajax call endpoints
+ * Hooks up configuration menu items and paths for ajax call endpoints.
  *
- * @return array
+ * @return array Menu
  */
 function tawk_to_menu() {
 
@@ -110,23 +109,26 @@ function tawk_to_menu() {
 }
 
 /**
- * Displays widget choosing view
+ * Displays widget configuration iframe.
  *
- * @param  integer $a
- * @param  integer $b
- * @return string
+ * Configuration iframe contains functionality from
+ * tawk.to server which is responsible for verifying
+ * user login details and also retrieves his page
+ * and widget list and comunicates back to upper
+ * page so that changes can be saved in DB.
+ *
+ * @return string Configuration view markup
  */
-function tawk_to_widget_customization($a = 0, $b = 0) {
+function tawk_to_widget_customization() {
   $base_url = tawk_to_get_base_url();
   $iframe_url = tawk_to_get_iframe_url();
   return include 'views/admin.php.inc';
 }
 
 /**
- * Constructs url which will be used to load iframe which
- * contains widget choosing functionality
+ * Constructs url for configuration iframe.
  *
- * @return string
+ * @return string Iframe url
  */
 function tawk_to_get_iframe_url() {
 
@@ -143,22 +145,18 @@ function tawk_to_get_iframe_url() {
 }
 
 /**
- * Base url for tawk.to application which serves iframe
+ * Base url for tawk.to application which serves iframe.
  *
- * @return string
+ * @return string Base url
  */
 function tawk_to_get_base_url() {
   return 'https://plugins.tawk.to';
 }
 
 /**
- * Ajax endpoint which is used to set selected widget details
- *
- * @param  integer $a
- * @param  integer $b
- * @return void
+ * Ajax endpoint which is used to set selected widget details.
  */
-function tawk_to_set_widget($a = 0, $b = 0) {
+function tawk_to_set_widget() {
 
   if (!isset($_POST['pageId']) || !isset($_POST['widgetId'])) {
     return drupal_json_output(['success' => FALSE]);
@@ -186,12 +184,7 @@ function tawk_to_set_widget($a = 0, $b = 0) {
 }
 
 /**
- * Ajax endpoint which is used to remove currently selected
- * widget details
- *
- * @param  integer $a
- * @param  integer $b
- * @return void
+ * Ajax endpoint which is used to remove currently selected widget details.
  */
 function tawk_to_remove_widget($a = 0, $b = 0) {
   db_delete('tawk_to_widget')
