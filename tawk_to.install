@@ -9,8 +9,6 @@
 
 /**
  * Initializes table which holds widget configuration data.
- *
- * @return array Widget table schema
  */
 function tawk_to_schema() {
   $schema['tawk_to_widget'] = array(
