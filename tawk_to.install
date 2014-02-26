@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @package Tawk.to module for Drupal
+ * @author Tawk.to
+ * @copyright (C) 2014- Tawk.to
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
+
+function tawk_to_schema() {
+	$schema['tawk_to_widget'] = array(
+		'description' => 'tawk.to widget',
+		'fields' => array(
+			'id'  => array(
+				'type' => 'int',
+				'not null' => TRUE,
+			),
+			'page_id' => array(
+				'type' => 'varchar',
+				'length' => 50,
+				'not null' => TRUE,
+				'default' => ''
+			),
+			'widget_id' => array(
+				'type' => 'varchar',
+				'length' => 50,
+				'not null' => TRUE,
+				'default' => ''
+			),
+		),
+		'primary key' => array('id')
+	);
+
+	return $schema;
+}
