@@ -1,11 +1,19 @@
 <?php
 
 /**
- * @package Tawk.to module for Drupal
+ * @file
+ * @package   Tawk.to module for Drupal
  * @copyright (C) 2014- Tawk.to
- * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+/**
+ * Returns help text which is dispalyed in modules page
+ *
+ * @param  string $path
+ * @param  mixed  $arg
+ * @return string
+ */
 function tawk_to_help($path, $arg) {
   switch ($path) {
     case "admin/help#tawk_to":
@@ -13,6 +21,11 @@ function tawk_to_help($path, $arg) {
   }
 }
 
+/**
+ * Retrieves widget details from database
+ *
+ * @return Array
+ */
 function tawk_to_get_widget() {
   try {
     return db_query('SELECT page_id, widget_id FROM {tawk_to_widget} WHERE id = 1', array(), array(
@@ -23,9 +36,14 @@ function tawk_to_get_widget() {
     watchdog('tawk_to', $e->getMessage());
     return NULL;
   }
-
 }
 
+/**
+ * Hook for adding widget script to every page
+ *
+ * @param  array $page
+ * @return array
+ */
 function tawk_to_page_build(&$page) {
   $widget = tawk_to_get_widget();
 
@@ -45,6 +63,12 @@ function tawk_to_page_build(&$page) {
   return $page;
 }
 
+/**
+ * Hooks up configuration menu items and paths for
+ * ajax call endpoints
+ *
+ * @return array
+ */
 function tawk_to_menu() {
 
   $items = array();
@@ -63,7 +87,7 @@ function tawk_to_menu() {
   $items['admin/config/tawk/widget'] = array(
     'title'            => 'Widget',
     'description'      => 'Included tawk.to widget configuration',
-    'page callback'    => 'tawk_to_widget_form',
+    'page callback'    => 'tawk_to_widget_customization',
     'access arguments' => array('administer site configuration'),
     'type'             => MENU_NORMAL_ITEM,
   );
@@ -85,12 +109,25 @@ function tawk_to_menu() {
   return $items;
 }
 
-function tawk_to_widget_form($a = 0, $b = 0) {
+/**
+ * Displays widget choosing view
+ *
+ * @param  integer $a
+ * @param  integer $b
+ * @return string
+ */
+function tawk_to_widget_customization($a = 0, $b = 0) {
   $base_url = tawk_to_get_base_url();
   $iframe_url = tawk_to_get_iframe_url();
   return include 'views/admin.php.inc';
 }
 
+/**
+ * Constructs url which will be used to load iframe which
+ * contains widget choosing functionality
+ *
+ * @return string
+ */
 function tawk_to_get_iframe_url() {
 
   $widget = tawk_to_get_widget();
@@ -98,18 +135,31 @@ function tawk_to_get_iframe_url() {
   if (!$widget) {
     $widget = array(
       'page_id'   => '',
-      'widget_id' => ''
+      'widget_id' => '',
     );
   }
 
   return tawk_to_get_base_url() . '/generic/widgets?currentWidgetId=' . $widget['widget_id'] . '&currentPageId=' . $widget['page_id'];
 }
 
+/**
+ * Base url for tawk.to application which serves iframe
+ *
+ * @return string
+ */
 function tawk_to_get_base_url() {
   return 'https://plugins.tawk.to';
 }
 
+/**
+ * Ajax endpoint which is used to set selected widget details
+ *
+ * @param  integer $a
+ * @param  integer $b
+ * @return void
+ */
 function tawk_to_set_widget($a = 0, $b = 0) {
+
   if (!isset($_POST['pageId']) || !isset($_POST['widgetId'])) {
     return drupal_json_output(['success' => FALSE]);
   }
@@ -121,7 +171,8 @@ function tawk_to_set_widget($a = 0, $b = 0) {
       'page_id'   => $_POST['pageId'],
       'widget_id' => $_POST['widgetId'],
     ))->execute();
-  } else {
+  }
+  else {
     db_update('tawk_to_widget')
       ->fields(array(
         'page_id'   => $_POST['pageId'],
@@ -134,6 +185,14 @@ function tawk_to_set_widget($a = 0, $b = 0) {
   drupal_json_output(['success' => TRUE]);
 }
 
+/**
+ * Ajax endpoint which is used to remove currently selected
+ * widget details
+ *
+ * @param  integer $a
+ * @param  integer $b
+ * @return void
+ */
 function tawk_to_remove_widget($a = 0, $b = 0) {
   db_delete('tawk_to_widget')
     ->condition('id', 1)

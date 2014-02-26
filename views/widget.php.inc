@@ -1,10 +1,11 @@
 <?php
 
 /**
- * @package Tawk.to module for Drupal
+ * @file
+ * @package   Tawk.to module for Drupal
  * @copyright (C) 2014- Tawk.to
- * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
-**/
+ * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ */
 
 return '<!--Start of Tawk.to Script-->
 <script type="text/javascript">

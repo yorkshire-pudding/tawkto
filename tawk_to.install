@@ -1,12 +1,18 @@
 <?php
 
 /**
- * @file      tawk_to.install
+ * @file
  * @package   Tawk.to module for Drupal
  * @copyright (C) 2014- Tawk.to
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+/**
+ * Initializes table which holds widget configuration
+ * data
+ *
+ * @return array
+ */
 function tawk_to_schema() {
   $schema['tawk_to_widget'] = array(
     'description' => 'tawk.to widget',
