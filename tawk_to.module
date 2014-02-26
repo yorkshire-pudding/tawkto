@@ -7,6 +7,10 @@
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+
+define('TAWK_WIDGET_PAGE_ID_VARIABLE', 'tawk_to_widget_page_id');
+define('TAWK_WIDGET_WIDGET_ID_VARIABLE', 'tawk_to_widget_widget_id');
+
 /**
  * Returns help text which is dispalyed in modules page.
  */
@@ -21,15 +25,10 @@ function tawk_to_help($path, $arg) {
  * Retrieves widget details from database.
  */
 function tawk_to_get_widget() {
-  try {
-    return db_query('SELECT page_id, widget_id FROM {tawk_to_widget} WHERE id = 1', array(), array(
-      'fetch' => PDO::FETCH_ASSOC,
-    ))->fetchAssoc();
-  }
-  catch(Exception $e) {
-    watchdog('tawk_to', $e->getMessage());
-    return NULL;
-  }
+  return array(
+    'page_id' => variable_get(TAWK_WIDGET_PAGE_ID_VARIABLE, ''),
+    'widget_id' => variable_get(TAWK_WIDGET_WIDGET_ID_VARIABLE, '')
+  );
 }
 
 /**
@@ -38,7 +37,7 @@ function tawk_to_get_widget() {
 function tawk_to_page_build(&$page) {
   $widget = tawk_to_get_widget();
 
-  if (!$widget) {
+  if ($widget['page_id'] === '' || $widget['widget_id'] === '') {
     return NULL;
   }
 
@@ -149,23 +148,9 @@ function tawk_to_set_widget() {
     return drupal_json_output(['success' => FALSE]);
   }
 
-  if (!tawk_to_get_widget()) {
-    db_insert('tawk_to_widget')
-    ->fields(array(
-      'id'        => 1,
-      'page_id'   => $_POST['pageId'],
-      'widget_id' => $_POST['widgetId'],
-    ))->execute();
-  }
-  else {
-    db_update('tawk_to_widget')
-      ->fields(array(
-        'page_id'   => $_POST['pageId'],
-        'widget_id' => $_POST['widgetId'],
-      ))
-      ->condition('id', 1, '=')
-      ->execute();
-  }
+
+  variable_set(TAWK_WIDGET_PAGE_ID_VARIABLE, $_POST['pageId']);
+  variable_set(TAWK_WIDGET_WIDGET_ID_VARIABLE, $_POST['widgetId']);
 
   drupal_json_output(['success' => TRUE]);
 }
@@ -174,9 +159,8 @@ function tawk_to_set_widget() {
  * Ajax endpoint which is used to remove currently selected widget details.
  */
 function tawk_to_remove_widget($a = 0, $b = 0) {
-  db_delete('tawk_to_widget')
-    ->condition('id', 1)
-    ->execute();
+  variable_del(TAWK_WIDGET_WIDGET_ID_VARIABLE);
+  variable_del(TAWK_WIDGET_PAGE_ID_VARIABLE);
 
   drupal_json_output(['success' => TRUE]);
 }
