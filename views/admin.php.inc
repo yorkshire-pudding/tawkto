@@ -24,7 +24,7 @@ return '<script type="text/javascript" src="' . $base_url . '/public/js/jquery-1
     var iframe = jQuery("#tawk_widget_customization")[0];
 
     window.addEventListener("message", function(e) {
-        if(e.origin === "'. $base_url .'") {
+        if(e.origin === "' . $base_url . '") {
 
             if(e.data.action === "setWidget") {
                 setWidget(e);
