@@ -8,8 +8,8 @@
  */
 
 
-define('TAWK_WIDGET_PAGE_ID_VARIABLE', 'tawk_to_widget_page_id');
-define('TAWK_WIDGET_WIDGET_ID_VARIABLE', 'tawk_to_widget_widget_id');
+define('TAWK_TO_WIDGET_PAGE_ID_VARIABLE', 'tawk_to_widget_page_id');
+define('TAWK_TO_WIDGET_WIDGET_ID_VARIABLE', 'tawk_to_widget_widget_id');
 
 /**
  * Returns help text which is dispalyed in modules page.
@@ -26,8 +26,8 @@ function tawk_to_help($path, $arg) {
  */
 function tawk_to_get_widget() {
   return array(
-    'page_id' => variable_get(TAWK_WIDGET_PAGE_ID_VARIABLE, ''),
-    'widget_id' => variable_get(TAWK_WIDGET_WIDGET_ID_VARIABLE, '')
+    'page_id' => variable_get(TAWK_TO_WIDGET_PAGE_ID_VARIABLE, ''),
+    'widget_id' => variable_get(TAWK_TO_WIDGET_WIDGET_ID_VARIABLE, ''),
   );
 }
 
@@ -144,13 +144,12 @@ function tawk_to_set_widget() {
     return drupal_json_output(['success' => FALSE]);
   }
 
-  if(preg_match('/^[0-9A-Fa-f]{24}$/', $_POST['pageId']) !== 1 || preg_match('/^[a-z0-9]{1,50}$/i', $_POST['widgetId']) !== 1) {
+  if (preg_match('/^[0-9A-Fa-f]{24}$/', $_POST['pageId']) !== 1 || preg_match('/^[a-z0-9]{1,50}$/i', $_POST['widgetId']) !== 1) {
     return drupal_json_output(['success' => FALSE]);
   }
 
-
-  variable_set(TAWK_WIDGET_PAGE_ID_VARIABLE, $_POST['pageId']);
-  variable_set(TAWK_WIDGET_WIDGET_ID_VARIABLE, $_POST['widgetId']);
+  variable_set(TAWK_TO_WIDGET_PAGE_ID_VARIABLE, $_POST['pageId']);
+  variable_set(TAWK_TO_WIDGET_WIDGET_ID_VARIABLE, $_POST['widgetId']);
 
   drupal_json_output(['success' => TRUE]);
 }
@@ -159,8 +158,8 @@ function tawk_to_set_widget() {
  * Ajax endpoint which is used to remove currently selected widget details.
  */
 function tawk_to_remove_widget($a = 0, $b = 0) {
-  variable_del(TAWK_WIDGET_WIDGET_ID_VARIABLE);
-  variable_del(TAWK_WIDGET_PAGE_ID_VARIABLE);
+  variable_del(TAWK_TO_WIDGET_WIDGET_ID_VARIABLE);
+  variable_del(TAWK_TO_WIDGET_PAGE_ID_VARIABLE);
 
   drupal_json_output(['success' => TRUE]);
 }
