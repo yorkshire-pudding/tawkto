@@ -9,10 +9,6 @@
 
 /**
  * Returns help text which is dispalyed in modules page.
- *
- * @param string $path path
- * @param mixed  $arg  arguments
- * @return string
  */
 function tawk_to_help($path, $arg) {
   switch ($path) {
@@ -23,8 +19,6 @@ function tawk_to_help($path, $arg) {
 
 /**
  * Retrieves widget details from database.
- *
- * @return array Widget details
  */
 function tawk_to_get_widget() {
   try {
@@ -40,9 +34,6 @@ function tawk_to_get_widget() {
 
 /**
  * Hook for adding widget script to every page.
- *
- * @param  array $page Page
- * @return array Modified page
  */
 function tawk_to_page_build(&$page) {
   $widget = tawk_to_get_widget();
@@ -65,8 +56,6 @@ function tawk_to_page_build(&$page) {
 
 /**
  * Hooks up configuration menu items and paths for ajax call endpoints.
- *
- * @return array Menu
  */
 function tawk_to_menu() {
 
@@ -116,8 +105,6 @@ function tawk_to_menu() {
  * user login details and also retrieves his page
  * and widget list and comunicates back to upper
  * page so that changes can be saved in DB.
- *
- * @return string Configuration view markup
  */
 function tawk_to_widget_customization() {
   $base_url = tawk_to_get_base_url();
@@ -127,8 +114,6 @@ function tawk_to_widget_customization() {
 
 /**
  * Constructs url for configuration iframe.
- *
- * @return string Iframe url
  */
 function tawk_to_get_iframe_url() {
 
@@ -146,8 +131,6 @@ function tawk_to_get_iframe_url() {
 
 /**
  * Base url for tawk.to application which serves iframe.
- *
- * @return string Base url
  */
 function tawk_to_get_base_url() {
   return 'https://plugins.tawk.to';
