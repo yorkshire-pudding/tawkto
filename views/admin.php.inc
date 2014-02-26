@@ -6,7 +6,7 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 **/
 
-return '<script type="text/javascript" src="'.$baseUrl.'/public/js/jquery-1.11.0.min.js"></script>
+return '<script type="text/javascript" src="'.$base_url.'/public/js/jquery-1.11.0.min.js"></script>
 
 <iframe
     id="tawkIframe"
@@ -16,14 +16,14 @@ return '<script type="text/javascript" src="'.$baseUrl.'/public/js/jquery-1.11.0
 
 <script type="text/javascript">
     var currentHost = window.location.protocol + "//" + window.location.host;
-    var url = "'.$iframeUrl.'&parentDomain=" + currentHost;
+    var url = "'.$iframe_url.'&parentDomain=" + currentHost;
 
     jQuery("#tawkIframe").attr("src", url);
 
     var iframe = jQuery("#tawk_widget_customization")[0];
 
     window.addEventListener("message", function(e) {
-        if(e.origin === "'. $baseUrl .'") {
+        if(e.origin === "'. $base_url .'") {
 
             if(e.data.action === "setWidget") {
                 setWidget(e);
@@ -40,13 +40,13 @@ return '<script type="text/javascript" src="'.$baseUrl.'/public/js/jquery-1.11.0
             pageId : e.data.pageId,
             widgetId : e.data.widgetId
         }, function(r) {
-            e.source.postMessage({action: "setDone"}, "'.$baseUrl.'");
+            e.source.postMessage({action: "setDone"}, "'.$base_url.'");
         });
     }
 
     function removeWidget(e) {
         jQuery.post("/admin/config/tawk/removewidget", function() {
-            e.source.postMessage({action: "removeDone"}, "'.$baseUrl.'");
+            e.source.postMessage({action: "removeDone"}, "'.$base_url.'");
         });
     }
 </script>';

@@ -19,16 +19,16 @@ function tawk_to_schema() {
         'type' => 'varchar',
         'length' => 50,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
       'widget_id' => array(
         'type' => 'varchar',
         'length' => 50,
         'not null' => TRUE,
-        'default' => ''
+        'default' => '',
       ),
     ),
-    'primary key' => array('id')
+    'primary key' => array('id'),
   );
 
   return $schema;
