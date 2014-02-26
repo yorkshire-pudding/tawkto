@@ -145,6 +145,10 @@ function tawk_to_set_widget() {
     return drupal_json_output(['success' => FALSE]);
   }
 
+  if(preg_match('/^[0-9A-Fa-f]{24}$/', $_POST['pageId']) !== 1 || preg_match('/^[a-z0-9]{1,50}$/i', $_POST['widgetId']) !== 1) {
+    return drupal_json_output(['success' => FALSE]);
+  }
+
   if (!tawk_to_get_widget()) {
     db_insert('tawk_to_widget')
     ->fields(array(
