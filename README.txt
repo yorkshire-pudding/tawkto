@@ -25,7 +25,7 @@ INSTALLATION
 
 CONFIGURATION
 -------------
- * After installation enable module, go to configuration and choose widget you want
- to use
- * It requires that you have tawk.to account before you can start using it, in case if
- you don't have one, go to https://tawk.to to create one
+ * After installation enable module, go to configuration and choose widget
+ you want to use
+ * It requires that you have tawk.to account before you can start using it,
+ in case if you don't have one, go to https://tawk.to to create one
