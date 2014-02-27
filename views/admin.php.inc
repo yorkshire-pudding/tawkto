@@ -12,7 +12,7 @@ return '<script type="text/javascript" src="' . $base_url . '/public/js/jquery-1
 <iframe
     id="tawkIframe"
     src=""
-    style="min-height: 300px; width : 100%; border: none">
+    style="min-height: 400px; width : 100%; border: none">
 </iframe>
 
 <script type="text/javascript">
@@ -41,13 +41,21 @@ return '<script type="text/javascript" src="' . $base_url . '/public/js/jquery-1
             pageId : e.data.pageId,
             widgetId : e.data.widgetId
         }, function(r) {
-            e.source.postMessage({action: "setDone"}, "' . $base_url . '");
+            if(r.success) {
+                e.source.postMessage({action: "setDone"}, "' . $base_url . '");
+            } else {
+                e.source.postMessage({action: "setFail"}, "' . $base_url . '");
+            }
         });
     }
 
     function removeWidget(e) {
-        jQuery.post("/admin/config/tawk/removewidget", function() {
-            e.source.postMessage({action: "removeDone"}, "' . $base_url . '");
+        jQuery.post("/admin/config/tawk/removewidget", function(r) {
+            if(r.success) {
+                e.source.postMessage({action: "removeDone"}, "' . $base_url . '");
+            } else {
+                e.source.postMessage({action: "removeFail"}, "' . $base_url . '");
+            }
         });
     }
 </script>';
