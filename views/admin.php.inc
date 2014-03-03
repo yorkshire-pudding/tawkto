@@ -8,7 +8,7 @@
  */
 
 /**
- * Creates markup for settings page
+ * Creates markup for settings page.
  */
 function tawk_to_render_widget_iframe($base_url, $iframe_url) {
   return '<script type="text/javascript" src="' . $base_url . '/public/js/jquery-1.11.0.min.js"></script>
