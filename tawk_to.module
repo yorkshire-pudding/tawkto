@@ -11,6 +11,9 @@
 define('TAWK_TO_WIDGET_PAGE_ID_VARIABLE', 'tawk_to_widget_page_id');
 define('TAWK_TO_WIDGET_WIDGET_ID_VARIABLE', 'tawk_to_widget_widget_id');
 
+require_once 'views/widget.php.inc';
+require_once 'views/admin.php.inc';
+
 /**
  * Returns help text which is dispalyed in modules page.
  */
@@ -44,10 +47,8 @@ function tawk_to_page_build(&$page) {
   $page_id = $widget['page_id'];
   $widget_id = $widget['widget_id'];
 
-  $widget_markup = include 'views/widget.php.inc';
-
   $page['page_bottom']['tawk_to_widget'] = array(
-    '#markup' => $widget_markup,
+    '#markup' => tawk_to_render_widget($page_id, $widget_id),
   );
 
   return $page;
@@ -108,7 +109,7 @@ function tawk_to_menu() {
 function tawk_to_widget_customization() {
   $base_url = tawk_to_get_base_url();
   $iframe_url = tawk_to_get_iframe_url();
-  return include 'views/admin.php.inc';
+  return tawk_to_render_widget_iframe($base_url, $iframe_url);
 }
 
 /**
