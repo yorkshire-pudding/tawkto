@@ -142,17 +142,17 @@ function tawk_to_get_base_url() {
 function tawk_to_set_widget() {
 
   if (!isset($_POST['pageId']) || !isset($_POST['widgetId'])) {
-    return drupal_json_output(array('success' => FALSE));
+    return drupal_json_output(['success' => FALSE]);
   }
 
   if (preg_match('/^[0-9A-Fa-f]{24}$/', $_POST['pageId']) !== 1 || preg_match('/^[a-z0-9]{1,50}$/i', $_POST['widgetId']) !== 1) {
-    return drupal_json_output(array('success' => FALSE));
+    return drupal_json_output(['success' => FALSE]);
   }
 
   variable_set(TAWK_TO_WIDGET_PAGE_ID_VARIABLE, $_POST['pageId']);
   variable_set(TAWK_TO_WIDGET_WIDGET_ID_VARIABLE, $_POST['widgetId']);
 
-  drupal_json_output(array('success' => TRUE));
+  drupal_json_output(['success' => TRUE]);
 }
 
 /**
@@ -162,5 +162,5 @@ function tawk_to_remove_widget($a = 0, $b = 0) {
   variable_del(TAWK_TO_WIDGET_WIDGET_ID_VARIABLE);
   variable_del(TAWK_TO_WIDGET_PAGE_ID_VARIABLE);
 
-  drupal_json_output(array('success' => TRUE));
+  drupal_json_output(['success' => TRUE]);
 }
