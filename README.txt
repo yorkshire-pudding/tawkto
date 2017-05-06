@@ -11,9 +11,9 @@ Tawk.to module allows you easily choose which one of your tawk.to widgets you
 want to use on your drupal page. To create account please visit https://tawk.to
 To answer chat go to https://dashboard.tawk.to
  * For a full description of the module, visit the project page:
-  https://drupal.org/project/tawk
+  https://www.drupal.org/sandbox/tawk/2205433
  * To submit bug reports and feature suggestions, or to track changes:
-  https://drupal.org/project/issues/tawk
+  https://www.drupal.org/project/issues/2205433
 
 REQUIREMENTS
 ------------
