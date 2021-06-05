@@ -8,13 +8,13 @@ CONTENTS OF THIS FILE
  INTRODUCTION
 ------------
 Tawk.to module allows you easily choose which one of your tawk.to widgets you
-want to use on your drupal page. To create account please visit https://tawk.to
+want to use on your backdrop page. To create account please visit https://tawk.to
 To answer chat go to https://dashboard.tawk.to
  * For a full description of the module, visit the project page:
-  https://www.drupal.org/project/tawktodrupal7
+  https://backdropcms.org/project/tawkto (PROJECT NOT IN BACKDROP-CONTRIB YET)
  * To submit bug reports and feature suggestions, or to track changes:
-  https://www.drupal.org/project/issues/2205433
-  or please email support@tawk.to
+  https://github.com/backdrop-contrib/tawkto/issues (PROJECT NOT IN BACKDROP-CONTRIB YET)
+  or please email support@tawk.to TBC
 
 REQUIREMENTS
 ------------
@@ -22,7 +22,7 @@ This module doesn't require any additional modules.
 
 INSTALLATION
 ------------
- * Install as usual, see https://drupal.org/documentation/install/modules-themes/modules-7 for further information.
+ * Install as usual, see https://backdropcms.org/guide/modules for further information.
 
 CONFIGURATION
 -------------
