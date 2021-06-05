@@ -2,47 +2,29 @@
 
 /**
  * @file
- * @package   Tawk.to module for Drupal
- * @copyright (C) 2014- Tawk.to
+ * @package   Tawk.to module for Backdrop CMS
+ * @copyright (C) TBC
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
-
-
-define('TAWKTO_WIDGET_PAGE_ID', 'tawkto_widget_page_id');
-define('TAWKTO_WIDGET_WIDGET_ID', 'tawkto_widget_widget_id');
-define('TAWKTO_WIDGET_OPTIONS', 'tawkto_widget_options');
-define('TAWKTO_WIDGET_USER_ID', 'tawkto_widget_user_id');
 
 require_once 'views/widget.php.inc';
 require_once 'views/admin.php.inc';
 
 /**
- * Returns help text which is dispalyed in modules page.
+ * Retrieves widget details from config file.
  */
-function tawk_to_help($path, $arg)
-{
-    switch ($path) {
-        case "admin/help#tawk_to":
-            return '<p>' . t("Tawk.to widget cutomization, using this module you can select widget which will be used on every page on your site") . '</p>';
-        break;
-    }
-}
-
-/**
- * Retrieves widget details from database.
- */
-function tawk_to_get_widget()
+function tawkto_get_widget()
 {
     return array(
-            'page_id' => variable_get(TAWKTO_WIDGET_PAGE_ID, ''),
-            'widget_id' => variable_get(TAWKTO_WIDGET_WIDGET_ID, ''),
+            'page_id' => config_get('tawkto.settings','page_id'),
+            'widget_id' => config_get('tawkto.settings','widget_id'),
         );
 }
 
 /**
  * Hook for adding widget script to every page.
  */
-function tawk_to_page_build(&$page)
+function tawkto_page_build(&$page)
 {
     global $base_url;
     
@@ -51,7 +33,7 @@ function tawk_to_page_build(&$page)
         return;
     }
     
-    $widget = tawk_to_get_widget();
+    $widget = tawkto_get_widget();
 
     if ($widget['page_id'] === '' || $widget['widget_id'] === '') {
         return null;
@@ -60,7 +42,7 @@ function tawk_to_page_build(&$page)
     $widget_id = $widget['widget_id'];
 
     // get visibility options
-    $options = variable_get(TAWKTO_WIDGET_OPTIONS, '');
+    $options = config_get('tawkto.settings','widget_options');
     if ($options) {
         $options = json_decode($options);
 
@@ -85,7 +67,7 @@ function tawk_to_page_build(&$page)
                 }
             }
             
-            if (drupal_is_front_page()) {
+            if (backdrop_is_front_page()) {
                 if (false != $options->show_onfrontpage) {
                     $show = true;
                 }                
@@ -119,7 +101,7 @@ function tawk_to_page_build(&$page)
     }
 
     $page['page_bottom']['tawkto_widget'] = array(
-            '#markup' => tawk_to_render_widget($page_id, $widget_id),
+            '#markup' => tawkto_render_widget($page_id, $widget_id),
         );
 
     return $page;
@@ -128,7 +110,7 @@ function tawk_to_page_build(&$page)
 /**
  * Hooks up configuration menu items and paths for ajax call endpoints.
  */
-function tawk_to_menu()
+function tawkto_menu()
 {
 
   $items = array();
@@ -140,7 +122,7 @@ function tawk_to_menu()
         'page callback'    => 'system_admin_menu_block_page',
         'access arguments' => array('administer site configuration'),
         'file'             => 'system.admin.inc',
-        'file path'        => drupal_get_path('module', 'system'),
+        'file path'        => backdrop_get_path('module', 'system'),
       );
 
   $items['admin/config/tawk/widget'] = array(
@@ -153,14 +135,14 @@ function tawk_to_menu()
 
   $items['admin/config/tawk/setwidget'] = array(
         'title'            => 'Set widget',
-        'page callback'    => 'tawk_to_set_widget',
+        'page callback'    => 'tawkto_set_widget',
         'access arguments' => array('administer site configuration'),
         'type'             => MENU_CALLBACK,
       );
 
   $items['admin/config/tawk/removewidget'] = array(
         'title'            => 'Remove widget',
-        'page callback'    => 'tawk_to_remove_widget',
+        'page callback'    => 'tawkto_remove_widget',
         'access arguments' => array('administer site configuration'),
         'type'             => MENU_CALLBACK,
       );
@@ -186,46 +168,46 @@ function tawk_to_menu()
  */
 function tawkto_widget_customization()
 {
-    $base_url = tawk_to_get_base_url();
-    $iframe_url = tawk_to_get_iframe_url();
-    $widget = tawk_to_get_widget();
+    $base_url = tawkto_get_base_url();
+    $iframe_url = tawkto_get_iframe_url();
+    $widget = tawkto_get_widget();
 
     global $user;
     $sameUser = true;
-    $value = variable_get(TAWKTO_WIDGET_USER_ID, '');
+    $value = config_get('tawkto.settings', 'widget_user_id');
     if (!empty($value) && $user->uid!=$value) {
         $sameUser = false;
     }
     
-    $displayOpts = variable_get(TAWKTO_WIDGET_OPTIONS, '');
+    $displayOpts = config_get('tawkto.settings','widget_options');
     if ($displayOpts && !empty($displayOpts)) {
         $displayOpts = json_decode($displayOpts);
     } else {
         $displayOpts = null;
     }
 
-    return tawk_to_render_widget_iframe($base_url, $iframe_url, $widget, $displayOpts, $sameUser);
+    return tawkto_render_widget_iframe($base_url, $iframe_url, $widget, $displayOpts, $sameUser);
 }
 
 /**
  * Constructs url for configuration iframe.
  */
-function tawk_to_get_iframe_url()
+function tawkto_get_iframe_url()
 {
-    $widget = tawk_to_get_widget();
+    $widget = tawkto_get_widget();
     if (!$widget) {
         $widget = array(
                 'page_id'   => '',
                 'widget_id' => '',
             );
     }
-    return tawk_to_get_base_url() . '/generic/widgets?currentWidgetId=' . $widget['widget_id'] . '&currentPageId=' . $widget['page_id'];
+    return tawkto_get_base_url() . '/generic/widgets?currentWidgetId=' . $widget['widget_id'] . '&currentPageId=' . $widget['page_id'];
 }
 
 /**
  * Base url for tawk.to application which serves iframe.
  */
-function tawk_to_get_base_url()
+function tawkto_get_base_url()
 {
     return 'https://plugins.tawk.to';
 }
@@ -233,37 +215,39 @@ function tawk_to_get_base_url()
 /**
  * Ajax endpoint which is used to set selected widget details.
  */
-function tawk_to_set_widget()
+function tawkto_set_widget()
 {
 
     if (!isset($_POST['pageId']) || !isset($_POST['widgetId'])) {
-        return drupal_json_output(array('success' => false));
+        return backdrop_json_output(array('success' => false));
     }
 
     if (preg_match('/^[0-9A-Fa-f]{24}$/', $_POST['pageId']) !== 1 || preg_match('/^[a-z0-9]{1,50}$/i', $_POST['widgetId']) !== 1) {
-        return drupal_json_output(array('success' => false));
+        return backdrop_json_output(array('success' => false));
     }
 
-    variable_set(TAWKTO_WIDGET_PAGE_ID, $_POST['pageId']);
-    variable_set(TAWKTO_WIDGET_WIDGET_ID, $_POST['widgetId']);
+    config_set('tawkto.settings', 'page_id', $_POST['pageId']);
+    config_set('tawkto.settings', 'widget_id', $_POST['widgetId']);
 
     global $user;
     if ($user->uid) {
-        variable_set(TAWKTO_WIDGET_USER_ID, $user->uid);
+        config_set('tawkto.settings', 'widget_user_id', $user->uid);
     }
 
-    drupal_json_output(array('success' => true));
+    backdrop_json_output(array('success' => true));
 }
 
 /**
  * Ajax endpoint which is used to remove currently selected widget details.
  */
-function tawk_to_remove_widget($a = 0, $b = 0)
+function tawkto_remove_widget($a = 0, $b = 0)
 {
-    variable_del(TAWKTO_WIDGET_PAGE_ID);
-    variable_del(TAWKTO_WIDGET_WIDGET_ID);
+	$config = config('tawkto.settings');
+	$config->clear('page_id');
+	$config->clear('widget_id');
+	$config->save;
 
-    drupal_json_output(array('success' => true));
+    backdrop_json_output(array('success' => true));
 }
 
 function tawkto_widget_options()
@@ -302,7 +286,7 @@ function tawkto_widget_options()
             }
         }
     }
-    variable_set(TAWKTO_WIDGET_OPTIONS, json_encode($jsonOpts));
+    config_set('tawkto.settings', 'widget_options', json_encode($jsonOpts));
 
-    drupal_json_output(array('success' => true));
+    backdrop_json_output(array('success' => true));
 }
