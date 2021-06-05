@@ -1,15 +1,15 @@
 <?php
 /**
  * @file
- * @package   tawk.to module for Drupal
- * @copyright (C) 2014- tawk.to
+ * @package   tawk.to module for Backdrop CMS
+ * @copyright (C) TBC
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
 /**
  * Creates markup for embed script element.
  */
-function tawk_to_render_widget($page_id, $widget_id)
+function tawkto_render_widget($page_id, $widget_id)
 {
     global $user;
     $apiString = '';

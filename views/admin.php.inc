@@ -1,15 +1,15 @@
 <?php
 /**
  * @file
- * @package   Tawk.to module for Drupal
- * @copyright (C) 2014- Tawk.to
+ * @package   Tawk.to module for Backdrop CMS
+ * @copyright (C) TBC
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
 /**
  * Creates markup for settings page.
  */
-function tawk_to_render_widget_iframe($base_url, $iframe_url, $widget=array(), $display_opts = null, $sameUser = true)
+function tawkto_render_widget_iframe($base_url, $iframe_url, $widget=array(), $display_opts = null, $sameUser = true)
 {
     ob_start();
     ?><link href="https://plugins.tawk.to/public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
